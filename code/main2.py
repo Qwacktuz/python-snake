@@ -73,12 +73,14 @@ class Main:
         if self.snake.body[0] == self.apple.pos:
             self.snake.has_eaten = True
             self.apple.set_pos()
-        
+
         # Game over
         # Basically check if it collides with itself or is outside of the window (COLS and ROWS)
-        if self.snake.body[0] in self.snake.body[1:] or \
-            not 0 <= self.snake.body[0].x < COLS or \
-            not 0 <= self.snake.body[0].y < ROWS:
+        if (
+            self.snake.body[0] in self.snake.body[1:]
+            or not 0 <= self.snake.body[0].x < COLS
+            or not 0 <= self.snake.body[0].y < ROWS
+        ):
             self.snake.reset()
             self.game_started = False
 
