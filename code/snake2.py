@@ -13,11 +13,11 @@ class Snake:
     
     def move(self):
         # 1. copy the list because immutability let's gooo
-        body_copy = self.body[:]
-        # 2. Get the head, aka the first coordinate in the list and move it in the direction
-        new_head = body_copy[0] + self.direction
-        # 3. Insert the new head at index 0
-        body_copy.insert(0, new_head)
+        # also get all of the body, but the last part to prevent INFINITE growth
+        body_copy = self.body[:-1]
+        # 2. Get the head, aka the first position in the body_copy and move it in the direction
+        # Insert the head at index 0
+        body_copy.insert(0, body_copy[0] + self.direction)
         # 4. Update the original body
         self.body = body_copy[:]
 

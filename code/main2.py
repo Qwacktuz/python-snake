@@ -4,23 +4,15 @@ from apple2 import Apple
 
 class Main:
     def __init__(self):
-        # general 
+        # ---------- general ----------
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         # The display surface is the main screen
         pygame.display.set_caption('Snake')
 
-        # game objects 
+        # ---------- game objects ---------- 
         # pygame.Rect defines the (left side (y), top side (x), width, height)
         # Double for loops are awesome inside list comprehension
-        # Alternative way to write this
-#         result = []
-# for row in range(ROWS):
-#     for col in range(0, COLS, 2):
-#         x = (col + int(row % 2 == 0)) * CELL_SIZE
-#         y = row * CELL_SIZE
-#         rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
-#         result.append(rect)
         self.bg_rects = [pygame.Rect((col + int(row % 2 == 0)) * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE) for col in range(0, COLS, 2) for row in range(ROWS)]
 
         self.snake = Snake()
@@ -28,23 +20,36 @@ class Main:
         # The apple object needs to know where the snake is in order to spawn correctly
         self.apple = Apple(self.snake)
 
+        # ---------- Timer ----------
+        # calls every 200 ms / 5 times per second
+        self.update_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.update_event, 200)
 
     def draw_bg(self):
         self.display_surface.fill(LIGHT_GREEN)
         for rect in self.bg_rects:
             pygame.draw.rect(self.display_surface, DARK_GREEN, rect)
 
-    # Pygame event loop
+    def user_input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT]: self.snake.direction = pygame.Vector2(1, 0) 
+        if keys[pygame.K_LEFT]: self.snake.direction = pygame.Vector2(-1, 0) 
+        if keys[pygame.K_UP]: self.snake.direction = pygame.Vector2(0, -1) 
+        if keys[pygame.K_DOWN]: self.snake.direction = pygame.Vector2(0, 1) 
+
+    # ---------- Event loop ----------
     def run(self):
         while True:
-            # always have a end condition in a while loop
             for event in pygame.event.get():
+                # always have a condition to stop the loop
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-            # updates
-            self.snake.move()
+                if event.type == self.update_event:
+                    self.snake.move()
 
+            # ---------- updates ----------
+            self.user_input()
             self.draw_bg()
             self.snake.draw()
             self.apple.draw()
