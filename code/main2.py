@@ -110,6 +110,6 @@ class Main:
 
 
 # basically only runs the code inside the if block only if i am directly executing this python file
-if __name__ == "__main__":
+if __name__ == '__main__':
     main = Main()
     main.run()

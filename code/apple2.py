@@ -12,7 +12,7 @@ class Apple:
 
         # use join method for the non-linux users out there
         # apparently needs to omit ".." because the path is relative to main.py
-        self.surf = pygame.image.load(join("graphics", "apple.png")).convert_alpha()
+        self.surf = pygame.image.load(join('graphics', 'apple.png')).convert_alpha()
 
     def set_pos(self):
         # basically the pygame.Vector2(x, y) basically gets stored in a list where you have both x and y posistion and check if apple is on the snake body
