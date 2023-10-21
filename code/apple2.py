@@ -3,7 +3,7 @@ from random import choice
 
 class Apple:
     def __init__(self, snake):
-        self.pos = pygame.Vector2(5, 8)
+        self.pos = pygame.Vector2()
         self.display_surface = pygame.display.get_surface()
         self.snake = snake
         self.set_pos()
