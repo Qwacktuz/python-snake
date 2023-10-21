@@ -8,7 +8,7 @@ class Main:
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         # The display surface is the main screen
-        pygame.display.set_caption('Snake')
+        pygame.display.set_caption('Totally Not A Google Snake Clone')
 
         # ---------- game objects ---------- 
         # pygame.Rect defines the (left side (y), top side (x), width, height)
@@ -16,7 +16,7 @@ class Main:
         self.bg_rects = [pygame.Rect((col + int(row % 2 == 0)) * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE) for col in range(0, COLS, 2) for row in range(ROWS)]
 
         self.snake = Snake()
-        
+
         # The apple object needs to know where the snake is in order to spawn correctly
         self.apple = Apple(self.snake)
 
@@ -38,9 +38,11 @@ class Main:
         if keys[pygame.K_DOWN]: self.snake.direction = pygame.Vector2(0, 1) if self.snake.direction.y != -1 else self.snake.direction
 
     def collision(self):
-        if self.apple.pos == self.snake.body[0]:
+        if self.snake.body[0] == self.apple.pos:
             self.snake.has_eaten = True
             self.apple.set_pos()
+        if self.snake.body[0] not in self.bg_rects:
+            print('game over')
 
     # ---------- Event loop ----------
     def run(self):
