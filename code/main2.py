@@ -33,8 +33,14 @@ class Main:
         # ---------- Timer ----------
         # calls every 200 ms / 5 times per second
         self.update_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.update_event, 200)
+        pygame.time.set_timer(self.update_event, 100)
         self.game_started = False
+
+        # ---------- Audio ----------
+        self.crunch_sound = pygame.mixer.Sound(join('audio', 'crunch.wav'))
+        self.bg_music = pygame.mixer.Sound(join('audio', 'Arcade.ogg'))
+        self.bg_music.set_volume(0.5)
+        self.bg_music.play(-1)
 
     def draw_bg(self):
         self.display_surface.fill(LIGHT_GREEN)
@@ -73,6 +79,7 @@ class Main:
         if self.snake.body[0] == self.apple.pos:
             self.snake.has_eaten = True
             self.apple.set_pos()
+            self.crunch_sound.play()
 
         # Game over
         # Basically check if it collides with itself or is outside of the window (COLS and ROWS)
