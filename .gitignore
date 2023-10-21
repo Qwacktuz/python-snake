@@ -1,2 +1,5 @@
-# Ignore this folder
+# Ignore initial template folder
 project stages/
+
+# Ignore pycache
+code/__pycache__
