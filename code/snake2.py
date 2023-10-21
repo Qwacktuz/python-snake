@@ -9,16 +9,23 @@ class Snake:
         # this is a list with three pygame.Vector2(x, y) points 
         self.body = [pygame.Vector2(START_COL - col, START_ROW) for col in range(START_LENGTH)]
 
+        # How many squares the snake updates in the direction
         self.direction = pygame.Vector2(1, 0)
+        
+        self.has_eaten = False
+
     
     def move(self):
-        # 1. copy the list because immutability let's gooo
-        # also get all of the body, but the last part to prevent INFINITE growth
-        body_copy = self.body[:-1]
-        # 2. Get the head, aka the first position in the body_copy and move it in the direction
+        if self.has_eaten:
+            body_copy = self.body[:]
+            self.has_eaten = False
+        else:
+            # get all of the body, but the last part to prevent INFINITE growth
+            body_copy = self.body[:-1]
+        
+        # Get the head, aka the first position in the body_copy and move it in the direction
         # Insert the head at index 0
         body_copy.insert(0, body_copy[0] + self.direction)
-        # 4. Update the original body
         self.body = body_copy[:]
 
     def draw(self):
