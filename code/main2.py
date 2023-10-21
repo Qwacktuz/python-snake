@@ -37,6 +37,11 @@ class Main:
         if keys[pygame.K_UP]: self.snake.direction = pygame.Vector2(0, -1) 
         if keys[pygame.K_DOWN]: self.snake.direction = pygame.Vector2(0, 1) 
 
+    def collision(self):
+        if self.apple.pos == self.snake.body[0]:
+            print('APPLE EATEN')
+            self.snake.has_eaten = True
+
     # ---------- Event loop ----------
     def run(self):
         while True:
@@ -48,11 +53,15 @@ class Main:
                 if event.type == self.update_event:
                     self.snake.move()
 
-            # ---------- updates ----------
+            # ---------- Updates ----------
             self.user_input()
+            self.collision()
+            
+            # ---------- Drawing ----------
             self.draw_bg()
             self.snake.draw()
             self.apple.draw()
+
             pygame.display.update()
 
 # basically only runs the code inside the if block only if i am directly executing this python file
