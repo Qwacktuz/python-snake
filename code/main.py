@@ -33,13 +33,14 @@ class Main:
         # ---------- Timer ----------
         # calls every 200 ms / 5 times per second
         self.update_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.update_event, 100)
+        pygame.time.set_timer(self.update_event, 200)
         self.game_started = False
 
         # ---------- Audio ----------
-        self.crunch_sound = pygame.mixer.Sound(join('audio', 'crunch.wav'))
-        self.bg_music = pygame.mixer.Sound(join('audio', 'Arcade.ogg'))
+        self.crunch_sound = pygame.mixer.Sound(join("audio", "crunch.wav"))
+        self.bg_music = pygame.mixer.Sound(join("audio", "Arcade.ogg"))
         self.bg_music.set_volume(0.5)
+        # -1 plays the music in a continuous loop
         self.bg_music.play(-1)
 
     def draw_bg(self):
@@ -91,6 +92,25 @@ class Main:
             self.snake.reset()
             self.game_started = False
 
+    def draw_shadow(self):
+        shadow_surf = pygame.Surface(self.display_surface.get_size())
+        shadow_surf.fill((0, 255, 0))
+        shadow_surf.set_colorkey((0, 255, 0))
+
+        # surf
+        shadow_surf.blit(
+            self.apple.scaled_surf, self.apple.scaled_rect.topleft + SHADOW_SIZE
+        )
+        for surf, rect in self.snake.draw_data:
+            shadow_surf.blit(surf, rect.topleft + SHADOW_SIZE)
+
+        mask = pygame.mask.from_surface(shadow_surf)
+        mask.invert()
+        shadow_surf = mask.to_surface()
+        shadow_surf.set_colorkey((255, 255, 255))
+        shadow_surf.set_alpha(SHADOW_OPACITY)
+        self.display_surface.blit(shadow_surf, (0, 0))
+
     def run(self):
         # ---------- Event loop ----------
         while True:
@@ -110,6 +130,7 @@ class Main:
 
             # ---------- Drawing ----------
             self.draw_bg()
+            self.draw_shadow()
             self.snake.draw()
             self.apple.draw()
 
@@ -117,6 +138,6 @@ class Main:
 
 
 # basically only runs the code inside the if block only if i am directly executing this python file
-if __name__ == '__main__':
+if __name__ == "__main__":
     main = Main()
     main.run()

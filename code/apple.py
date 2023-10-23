@@ -11,8 +11,15 @@ class Apple:
         self.set_pos()
 
         # use join method for the non-linux users out there
-        # apparently needs to omit ".." because the path is relative to main.py
-        self.surf = pygame.image.load(join('graphics', 'apple.png')).convert_alpha()
+        # apparently needs to omit ".." because the path is relative to git root folder?
+        self.surf = pygame.image.load(join("graphics", "apple.png")).convert_alpha()
+        self.scaled_surf = self.surf.copy()
+        self.scaled_rect = self.scaled_surf.get_rect(
+            center=(
+                self.pos.x * CELL_SIZE + CELL_SIZE / 2,
+                self.pos.y * CELL_SIZE + CELL_SIZE / 2,
+            )
+        )
 
     def set_pos(self):
         # basically the pygame.Vector2(x, y) basically gets stored in a list where you have both x and y posistion and check if apple is on the snake body

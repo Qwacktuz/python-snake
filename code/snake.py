@@ -19,8 +19,8 @@ class Snake:
         # ---------- Graphics ----------
         self.surfs = self.import_surfs()
         self.draw_data = []
-        self.head_surf = self.surfs['head_right']
-        self.tail_surf = self.surfs['tail_left']
+        self.head_surf = self.surfs["head_right"]
+        self.tail_surf = self.surfs["tail_left"]
 
     def import_surfs(self):
         surf_dict = {}
@@ -43,7 +43,7 @@ class Snake:
         # Insert the head at index 0
         body_copy.insert(0, body_copy[0] + self.direction)
         self.body = body_copy[:]
-        
+
         self.update_head()
         self.update_tail()
         self.update_body()
@@ -52,19 +52,27 @@ class Snake:
         # Make sure the head is facing the right way
         # the body part minus the head
         head_relation = self.body[1] - self.body[0]
-        if head_relation == pygame.Vector2(-1, 0): self.head_surf = self.surfs['head_right']
-        elif head_relation == pygame.Vector2(1, 0): self.head_surf = self.surfs['head_left']
-        elif head_relation == pygame.Vector2(0, -1): self.head_surf = self.surfs['head_down']
-        elif head_relation == pygame.Vector2(0, 1): self.head_surf = self.surfs['head_up']
+        if head_relation == pygame.Vector2(-1, 0):
+            self.head_surf = self.surfs["head_right"]
+        elif head_relation == pygame.Vector2(1, 0):
+            self.head_surf = self.surfs["head_left"]
+        elif head_relation == pygame.Vector2(0, -1):
+            self.head_surf = self.surfs["head_down"]
+        elif head_relation == pygame.Vector2(0, 1):
+            self.head_surf = self.surfs["head_up"]
 
     def update_tail(self):
         # the last body part minus the tail
         # basically the same as the head but the inverted way
         tail_relation = self.body[-2] - self.body[-1]
-        if tail_relation == pygame.Vector2(-1, 0): self.tail_surf = self.surfs['tail_right']
-        elif tail_relation == pygame.Vector2(1, 0): self.tail_surf = self.surfs['tail_left']
-        elif tail_relation == pygame.Vector2(0, -1): self.tail_surf = self.surfs['tail_down']
-        elif tail_relation == pygame.Vector2(0, 1): self.tail_surf = self.surfs['tail_up']
+        if tail_relation == pygame.Vector2(-1, 0):
+            self.tail_surf = self.surfs["tail_right"]
+        elif tail_relation == pygame.Vector2(1, 0):
+            self.tail_surf = self.surfs["tail_left"]
+        elif tail_relation == pygame.Vector2(0, -1):
+            self.tail_surf = self.surfs["tail_down"]
+        elif tail_relation == pygame.Vector2(0, 1):
+            self.tail_surf = self.surfs["tail_up"]
 
     def update_body(self):
         self.draw_data = []
@@ -81,25 +89,43 @@ class Snake:
                 last_part = self.body[index + 1] - part
                 next_part = self.body[index - 1] - part
                 if last_part.x == next_part.x:
-                    self.draw_data.append((self.surfs['body_horizontal'], rect))
+                    self.draw_data.append((self.surfs["body_horizontal"], rect))
                 if last_part.y == next_part.y:
-                    self.draw_data.append((self.surfs['body_vertical'], rect))
+                    self.draw_data.append((self.surfs["body_vertical"], rect))
                 else:
-                    if last_part.x == -1 and next_part.y == -1 or last_part.y == -1 and next_part.x == -1:
-                        self.draw_data.append((self.surfs['body_tl'], rect))
-                    elif last_part.x == -1 and next_part.y == 1 or last_part.y == 1 and next_part.x == -1:
-                        self.draw_data.append((self.surfs['body_bl'], rect))
-                    elif last_part.x == 1 and next_part.y == -1 or last_part.y == -1 and next_part.x == 1:
-                        self.draw_data.append((self.surfs['body_tr'], rect))
-                    elif last_part.x == 1 and next_part.y == 1 or last_part.y == 1 and next_part.x == 1:
-                        self.draw_data.append((self.surfs['body_br'], rect))
-                    
-
+                    if (
+                        last_part.x == -1
+                        and next_part.y == -1
+                        or last_part.y == -1
+                        and next_part.x == -1
+                    ):
+                        self.draw_data.append((self.surfs["body_tl"], rect))
+                    elif (
+                        last_part.x == -1
+                        and next_part.y == 1
+                        or last_part.y == 1
+                        and next_part.x == -1
+                    ):
+                        self.draw_data.append((self.surfs["body_bl"], rect))
+                    elif (
+                        last_part.x == 1
+                        and next_part.y == -1
+                        or last_part.y == -1
+                        and next_part.x == 1
+                    ):
+                        self.draw_data.append((self.surfs["body_tr"], rect))
+                    elif (
+                        last_part.x == 1
+                        and next_part.y == 1
+                        or last_part.y == 1
+                        and next_part.x == 1
+                    ):
+                        self.draw_data.append((self.surfs["body_br"], rect))
 
     def draw(self):
         for surf, rect in self.draw_data:
             self.display_surface.blit(surf, rect)
-    
+
     def reset(self):
         self.body = [
             pygame.Vector2(START_COL - col, START_ROW) for col in range(START_LENGTH)
